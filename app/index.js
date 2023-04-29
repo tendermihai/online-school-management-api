@@ -1,6 +1,7 @@
 import express, { json, request, response } from "express";
 
-import studentRoute from "./student/routes/studentRoute.js";
+import route from "./student/route.js";
+import book from "./book/book.js";
 import cors from "cors";
 
 const app = express();
@@ -9,7 +10,8 @@ app.use(express.json());
 
 app.use(cors());
 
-app.use("/api/v1/students", studentRoute);
+app.use("/api/v1/students", route);
+app.use("/api/v1/books", book);
 
 app.listen(2020, () => {
   console.log("express is listening on 2020");

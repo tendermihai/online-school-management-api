@@ -103,11 +103,11 @@ export async function addStudent(student) {
 }
 
 export async function generateId() {
-  let cars = await getStudents();
+  let students = await getStudents();
 
   let id = Math.random() * 1000000 + 10000 + "";
 
-  while (verifyId(cars, id) == true) {
+  while (verifyId(students, id) == true) {
     id = Math.random() * 1000000 + 10000 + "";
   }
 
