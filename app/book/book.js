@@ -1,12 +1,13 @@
 import express from "express";
 import {
-  getStudents,
-  getSortStudents,
+  getBooks,
+  getSortBooks,
+  deleteBook,
+  updateBook,
   getById,
-  deleteStudent,
-  updateStudent,
-  addStudent,
-} from "../repository.js";
+  verifyId,
+  addBook,
+} from "../book/repository.js";
 
 const app = express.Router();
 
@@ -23,25 +24,26 @@ function asyncHandler(cb) {
 app.get(
   "/all",
   asyncHandler(async (request, response) => {
-    let students = await getStudents();
-    response.status(200).json(students);
+    let books = await getBooks();
+    response.status(200).json(books);
   })
 );
 
 app.get(
   "/sort/:field",
   asyncHandler(async (request, response) => {
-    let students = getSortStudents(request.params.field);
-    response.status(200).json(students);
+    let books = getSortBooks(request.params.field);
+    response.status(200).json(books);
   })
 );
 
 app.get(
   "/find/id/:id",
   asyncHandler(async (request, response) => {
-    let student = await getById(request.params.id);
-    if (student !== null) {
-      response.status(200).json(student);
+    let book = await getById(request.params.id);
+    console.log(book, "this is book");
+    if (book !== null) {
+      response.status(200).json(book);
     } else {
       response
         .status(400)
@@ -58,7 +60,7 @@ app.delete(
     if ((await getById(id)) == null) {
       response.status(400).json({ message: "Could not find ID" });
     } else {
-      await deleteStudent(id);
+      await deleteBook(id);
       response
         .status(200)
         .json({ message: `Student with ID ${id} deleted successfully`, id });
@@ -69,23 +71,22 @@ app.delete(
 app.put(
   "/update",
   asyncHandler(async (request, response) => {
-    await updateStudent(request.body.student);
-    response.status(200).json(request.body.student);
+    await updateBook(request.body.book);
+    response.status(200).json(request.body.book);
+    // console.log(request.body.book, "body of book");
   })
 );
 
 app.post(
   "/add",
   asyncHandler(async (request, response) => {
-    let student = {
-      firstName: request.body.firstName,
-      lastName: request.body.lastName,
-      email: request.body.email,
-      age: request.body.age,
+    let book = {
+      bookName: request.body.bookName,
+      createdAt: request.body.createdAt,
     };
 
-    await addStudent(student);
-    response.status(200).json(student);
+    await addBook(book);
+    response.status(200).json(book);
   })
 );
 
