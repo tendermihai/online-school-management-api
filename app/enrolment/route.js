@@ -1,13 +1,13 @@
 import express from "express";
 import {
-  getBooks,
-  getSortBooks,
-  deleteBook,
-  updateBook,
+  getEnrolment,
   getById,
+  generateId,
   verifyId,
-  addBook,
-} from "../book/repository.js";
+  updateEnrolment,
+  deleteEnrolment,
+  addEnrolment,
+} from "./repository.js";
 
 const app = express.Router();
 
@@ -24,30 +24,30 @@ function asyncHandler(cb) {
 app.get(
   "/all",
   asyncHandler(async (request, response) => {
-    let books = await getBooks();
-    response.status(200).json(books);
+    let enrolments = await getEnrolment();
+    response.status(200).json(enrolments);
   })
 );
 
 app.get(
   "/sort/:field",
   asyncHandler(async (request, response) => {
-    let books = getSortBooks(request.params.field);
-    response.status(200).json(books);
+    let enrolments = getSortEnrolments(request.params.field);
+    response.status(200).json(enrolments);
   })
 );
 
 app.get(
   "/find/id/:id",
   asyncHandler(async (request, response) => {
-    let book = await getById(request.params.id);
-    console.log(book, "this is book");
-    if (book !== null) {
-      response.status(200).json(book);
+    let enrolment = await getById(request.params.id);
+
+    if (enrolment !== null) {
+      response.status(200).json(enrolment);
     } else {
       response
         .status(400)
-        .json({ message: "Studentul nu este in baza de date" });
+        .json({ message: "Enrolmentul nu este in baza de date" });
     }
   })
 );
@@ -60,10 +60,10 @@ app.delete(
     if ((await getById(id)) == null) {
       response.status(400).json({ message: "Could not find ID" });
     } else {
-      await deleteBook(id);
+      await deleteEnrolment(id);
       response
         .status(200)
-        .json({ message: `Student with ID ${id} deleted successfully`, id });
+        .json({ message: `Enrolment with ID ${id} deleted successfully`, id });
     }
   })
 );
@@ -71,22 +71,22 @@ app.delete(
 app.put(
   "/update",
   asyncHandler(async (request, response) => {
-    await updateBook(request.body.book);
-    response.status(200).json(request.body.book);
-    // console.log(request.body.book, "body of book");
+    await updateEnrolment(request.body.enrolment);
+    response.status(200).json(request.body.enrolment);
   })
 );
 
 app.post(
   "/add",
   asyncHandler(async (request, response) => {
-    let book = {
-      bookName: request.body.bookName,
+    let enrolment = {
+      studentId: request.body.studentId,
+      courseId: request.body.courseId,
       createdAt: request.body.createdAt,
     };
 
-    await addBook(book);
-    response.status(200).json(book);
+    await addEnrolment(enrolment);
+    response.status(200).json(enrolment);
   })
 );
 

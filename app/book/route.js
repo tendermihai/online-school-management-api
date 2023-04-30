@@ -1,14 +1,13 @@
 import express from "express";
 import {
-  getCourses,
-  generateId,
-  verifyId,
-  updateCourses,
-  addCourse,
-  deleteCourse,
-  getSortCourses,
+  getBooks,
+  getSortBooks,
+  deleteBook,
+  updateBook,
   getById,
-} from "../course/repository.js";
+  verifyId,
+  addBook,
+} from "./repository.js";
 
 const app = express.Router();
 
@@ -25,28 +24,30 @@ function asyncHandler(cb) {
 app.get(
   "/all",
   asyncHandler(async (request, response) => {
-    let courses = await getCourses();
-    response.status(200).json(courses);
+    let books = await getBooks();
+    response.status(200).json(books);
   })
 );
 
 app.get(
   "/sort/:field",
   asyncHandler(async (request, response) => {
-    let courses = getSortCourses(request.params.field);
-    response.status(200).json(courses);
+    let books = getSortBooks(request.params.field);
+    response.status(200).json(books);
   })
 );
 
 app.get(
   "/find/id/:id",
   asyncHandler(async (request, response) => {
-    let course = await getById(request.params.id);
-
-    if (course !== null) {
-      response.status(200).json(course);
+    let book = await getById(request.params.id);
+    console.log(book, "this is book");
+    if (book !== null) {
+      response.status(200).json(book);
     } else {
-      response.status(400).json({ message: "Cursul nu este in baza de date" });
+      response
+        .status(400)
+        .json({ message: "Studentul nu este in baza de date" });
     }
   })
 );
@@ -59,10 +60,10 @@ app.delete(
     if ((await getById(id)) == null) {
       response.status(400).json({ message: "Could not find ID" });
     } else {
-      await deleteCourse(id);
+      await deleteBook(id);
       response
         .status(200)
-        .json({ message: `Course with ID ${id} deleted successfully`, id });
+        .json({ message: `Student with ID ${id} deleted successfully`, id });
     }
   })
 );
@@ -70,21 +71,22 @@ app.delete(
 app.put(
   "/update",
   asyncHandler(async (request, response) => {
-    await updateCourses(request.body.course);
-    response.status(200).json(request.body.course);
+    await updateBook(request.body.book);
+    response.status(200).json(request.body.book);
+    // console.log(request.body.book, "body of book");
   })
 );
 
 app.post(
   "/add",
   asyncHandler(async (request, response) => {
-    let course = {
-      name: request.body.name,
-      department: request.body.department,
+    let book = {
+      bookName: request.body.bookName,
+      createdAt: request.body.createdAt,
     };
 
-    await addCourse(course);
-    response.status(200).json(course);
+    await addBook(book);
+    response.status(200).json(book);
   })
 );
 
