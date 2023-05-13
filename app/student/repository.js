@@ -122,3 +122,13 @@ export async function verifyId(students, id) {
   }
   return false;
 }
+
+export async function verifyLogin(email, password) {
+  let students = await getStudents();
+  for (let i = 0; i < students.length; i++) {
+    if (students[i].email === email && students[i].password === password) {
+      return students[i];
+    }
+  }
+  return null;
+}
