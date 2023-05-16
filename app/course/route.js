@@ -48,7 +48,11 @@ app.get(
       );
 
       if (arr.length > 0) {
-        enrolledCorses.push({ ...course, isEnroled: true });
+        enrolledCorses.push({
+          ...course,
+          isEnroled: true,
+          enrolmentId: arr[0].id,
+        });
       } else {
         enrolledCorses.push({ ...course, isEnroled: false });
       }

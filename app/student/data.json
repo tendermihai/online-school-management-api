@@ -46,5 +46,29 @@
         "email": "npalk6@admin.ch",
         "password": "asdfasdfewf212",
         "age": 15
+    },
+    {
+        "firstName": "Zumba",
+        "lastName": "Zumbalau",
+        "password": "asdasdasda",
+        "email": "zumba@gmail.com",
+        "age": 12,
+        "id": "1665221623723416"
+    },
+    {
+        "firstName": "Sabin",
+        "lastName": "Nituica",
+        "password": "asdasdasda",
+        "email": "nituica@gmail.com",
+        "age": "12",
+        "id": "9940700769183208"
+    },
+    {
+        "firstName": "Andrei",
+        "lastName": "Cioc",
+        "password": "asdfasd3453454",
+        "email": "cioc@gmail.com",
+        "age": "12",
+        "id": "8328713974316793"
     }
 ]

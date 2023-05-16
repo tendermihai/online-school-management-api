@@ -82,6 +82,7 @@ app.post(
       firstName: request.body.firstName,
       lastName: request.body.lastName,
       email: request.body.email,
+      password: request.body.password,
       age: request.body.age,
     };
 
@@ -106,6 +107,21 @@ app.post("/login", async (request, response) => {
 });
 //
 
+app.post(
+  "/register",
+  asyncHandler(async (request, response) => {
+    let register = {
+      firstName: request.body.firstName,
+      lastName: request.body.lastName,
+      password: request.body.password,
+      email: request.body.email,
+      age: request.body.age,
+    };
+
+    await addStudent(register);
+    response.status(200).json(register);
+  })
+);
 //email si pass verificam
 
 export default app;
