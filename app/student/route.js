@@ -6,6 +6,7 @@ import {
   deleteStudent,
   updateStudent,
   addStudent,
+  verifyLogin,
 } from "../student/repository.js";
 
 const app = express.Router();
@@ -81,6 +82,7 @@ app.post(
       firstName: request.body.firstName,
       lastName: request.body.lastName,
       email: request.body.email,
+      password: request.body.password,
       age: request.body.age,
     };
 
@@ -88,5 +90,38 @@ app.post(
     response.status(200).json(student);
   })
 );
+
+app.post("/login", async (request, response) => {
+  let login = {
+    email: request.body.email,
+    password: request.body.password,
+  };
+
+  let resp = await verifyLogin(request.body.email, request.body.password);
+
+  if (resp == null) {
+    response.status(403).json("Credentials are not correct.");
+  } else {
+    response.status(200).json(resp);
+  }
+});
+//
+
+app.post(
+  "/register",
+  asyncHandler(async (request, response) => {
+    let register = {
+      firstName: request.body.firstName,
+      lastName: request.body.lastName,
+      password: request.body.password,
+      email: request.body.email,
+      age: request.body.age,
+    };
+
+    await addStudent(register);
+    response.status(200).json(register);
+  })
+);
+//email si pass verificam
 
 export default app;

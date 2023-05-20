@@ -9,6 +9,7 @@ import {
   getSortCourses,
   getById,
 } from "./repository.js";
+import { findEnrolmentsByStundetId } from "../enrolment/repository.js";
 
 const app = express.Router();
 
@@ -27,6 +28,37 @@ app.get(
   asyncHandler(async (request, response) => {
     let courses = await getCourses();
     response.status(200).json(courses);
+  })
+);
+
+// endpoint with status
+app.get(
+  "/all/status/:studentId",
+  asyncHandler(async (request, response) => {
+    let studentId = request.params.studentId;
+
+    let enrolments = await findEnrolmentsByStundetId(studentId);
+
+    let courses = await getCourses();
+
+    let enrolledCorses = [];
+    courses.forEach((course) => {
+      let arr = enrolments.filter(
+        (enrolment) => enrolment.courseId === course.id
+      );
+
+      if (arr.length > 0) {
+        enrolledCorses.push({
+          ...course,
+          isEnroled: true,
+          enrolmentId: arr[0].id,
+        });
+      } else {
+        enrolledCorses.push({ ...course, isEnroled: false });
+      }
+    });
+
+    response.json(enrolledCorses).status(200);
   })
 );
 

@@ -120,3 +120,8 @@ export async function verifyId(enrolments, id) {
   }
   return false;
 }
+
+export async function findEnrolmentsByStundetId(studentId) {
+  let enrolments = await getEnrolment();
+  return enrolments.filter((enrolment) => enrolment.studentId == studentId);
+}

@@ -112,3 +112,8 @@ export async function verifyId(books, id) {
   }
   return false;
 }
+
+export async function findBookByStudentId(studentId) {
+  let books = await getBooks();
+  return books.filter((elem) => elem.studentId === studentId);
+}

@@ -56,6 +56,7 @@ app.delete(
   "/delete/id/:id",
   asyncHandler(async (request, response) => {
     const id = request.params.id;
+    console.log(id, "id delete");
 
     if ((await getById(id)) == null) {
       response.status(400).json({ message: "Could not find ID" });
@@ -63,7 +64,7 @@ app.delete(
       await deleteEnrolment(id);
       response
         .status(200)
-        .json({ message: `Enrolment with ID ${id} deleted successfully`, id });
+        .json({ message: `Enrolment with ID ${id} deleted successfully` });
     }
   })
 );

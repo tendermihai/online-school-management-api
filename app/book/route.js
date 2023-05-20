@@ -7,6 +7,7 @@ import {
   getById,
   verifyId,
   addBook,
+  findBookByStudentId,
 } from "./repository.js";
 
 const app = express.Router();
@@ -33,6 +34,14 @@ app.get(
   "/sort/:field",
   asyncHandler(async (request, response) => {
     let books = getSortBooks(request.params.field);
+    response.status(200).json(books);
+  })
+);
+
+app.get(
+  "/find/:studentId",
+  asyncHandler(async (request, response) => {
+    let books = await findBookByStudentId(request.params.studentId);
     response.status(200).json(books);
   })
 );
